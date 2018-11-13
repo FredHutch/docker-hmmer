@@ -78,6 +78,19 @@ if __name__ == "__main__":
     # Make sure the output exists
     assert os.path.exists(output_aln)
 
+    # Optionally compress the results
+    if args.output.endswith(".gz"):
+        logging.info('Compressing the output')
+        try:
+            run_cmds([
+                "gzip",
+                output_aln
+            ])
+        except:
+            exit_and_clean_up(temp_folder)
+
+        output_aln = output_aln + ".gz"
+
     # Upload the results
     try:
         upload_file(output_aln, args.output)

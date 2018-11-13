@@ -24,3 +24,14 @@
   --output /usr/local/tests/globins4.HBB_HUMAN.aln \
   --temp-folder /usr/local/tests/
 }
+
+@test "run hmmsearch.py on example file (GZIP)" {
+  hmmsearch.py \
+  --query /usr/local/tests/HBB_HUMAN.fasta \
+  --profile /usr/local/tests/globins4.hmm \
+  --output /usr/local/tests/globins4.HBB_HUMAN.aln.gz \
+  --temp-folder /usr/local/tests/
+
+  gzip -t /usr/local/tests/globins4.HBB_HUMAN.aln.gz
+
+}
