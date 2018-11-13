@@ -9,6 +9,7 @@ RUN apt update && \
 # Add the wrapper scripts to the PATH
 ADD . /usr/local/hmmer_scripts/
 RUN ln -s /usr/local/hmmer_scripts/hmmbuild.py /usr/local/bin/
+RUN ln -s /usr/local/hmmer_scripts/hmmsearch.py /usr/local/bin/
 
 # Run tests
 ADD tests/ /usr/local/tests

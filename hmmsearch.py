@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build an HMM profile from a multiple alignment."""
+"""Search an HMM profile against a FASTA file."""
 
 import argparse
 import logging
@@ -17,15 +17,18 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(
         description="""
-        Build an HMM profile from a multiple alignment.
+        Search an HMM profile against a FASTA file.
         """)
 
-    parser.add_argument("--input",
+    parser.add_argument("--query",
                         type=str,
-                        help="Location for input alignment file.")
+                        help="Location for input FASTA file.")
+    parser.add_argument("--profile",
+                        type=str,
+                        help="Location for input HMM file.")
     parser.add_argument("--output",
                         type=str,
-                        help="Location for output HMM profile.")
+                        help="Location for output HMM alignment.")
     parser.add_argument("--logfile",
                         type=str,
                         help="""(Optional) Write log to this file.""")
@@ -33,7 +36,6 @@ if __name__ == "__main__":
                         type=str,
                         default="/share",
                         help="""Temporary directory to use.""")
-
 
     args = parser.parse_args(sys.argv[1:])
 
@@ -43,34 +45,42 @@ if __name__ == "__main__":
     temp_folder = set_up_temp_folder(args.temp_folder)
 
     # Set up logging
-    log_fp = set_up_logging(temp_folder, "HMMBUILD")
+    log_fp = set_up_logging(temp_folder, "HMMSEARCH")
 
-    # Get the input file
+    # Get the query FASTA
     try:
-        input_fp = get_file(args.input, temp_folder)
+        input_fasta = get_file(args.query, temp_folder)
     except:
         exit_and_clean_up(temp_folder)
 
-    # Make the HMM
-    output_hmm = os.path.join(
-        temp_folder, 
-        "{}.hmm".format(str(uuid.uuid4())[:8])
+    # Get the query profile
+    try:
+        input_hmm = get_file(args.profile, temp_folder)
+    except:
+        exit_and_clean_up(temp_folder)
+
+    # Run the alignment
+    output_aln = os.path.join(
+        temp_folder,
+        "{}.aln".format(str(uuid.uuid4())[:8])
     )
     try:
         run_cmds([
-            "hmmbuild",
-            output_hmm,
-            input_fp
-        ])
+            "hmmsearch",
+            input_hmm,
+            input_fasta
+        ], 
+            stdout=output_aln
+        )
     except:
         exit_and_clean_up(temp_folder)
 
     # Make sure the output exists
-    assert os.path.exists(output_hmm)
+    assert os.path.exists(output_aln)
 
     # Upload the results
     try:
-        upload_file(output_hmm, args.output)
+        upload_file(output_aln, args.output)
     except:
         exit_and_clean_up(temp_folder)
 

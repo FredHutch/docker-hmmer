@@ -1,0 +1,51 @@
+# hmmsearch :: search profile(s) against a sequence database
+# HMMER 3.1b2 (February 2015); http://hmmer.org/
+# Copyright (C) 2015 Howard Hughes Medical Institute.
+# Freely distributed under the GNU General Public License (GPLv3).
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+# query HMM file:                  /share/394049de/7320e6e5.globins4.hmm
+# target sequence database:        /share/394049de/190ee53e.HBB_HUMAN.fasta
+# - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query:       1872f030.globins4  [M=149]
+Scores for complete sequences (score includes all domains):
+   --- full sequence ---   --- best 1 domain ---    -#dom-
+    E-value  score  bias    E-value  score  bias    exp  N  Sequence            Description
+    ------- ------ -----    ------- ------ -----   ---- --  --------            -----------
+      9e-69  216.6   0.0      1e-68  216.5   0.0    1.0  1  sp|P68871|HBB_HUMAN  Hemoglobin subunit beta OS=Homo sapiens 
+
+
+Domain annotation for each sequence (and alignments):
+>> sp|P68871|HBB_HUMAN  Hemoglobin subunit beta OS=Homo sapiens OX=9606 GN=HBB PE=1 SV=2
+   #    score  bias  c-Evalue  i-Evalue hmmfrom  hmm to    alifrom  ali to    envfrom  env to     acc
+ ---   ------ ----- --------- --------- ------- -------    ------- -------    ------- -------    ----
+   1 !  216.5   0.0     1e-68     1e-68       1     149 []       2     147 .]       2     147 .] 0.99
+
+  Alignments for each domain:
+  == domain 1  score: 216.5 bits;  conditional E-value: 1e-68
+    1872f030.globins4   1 vvLseaektkvkavWakveadveesGadiLvrlfkstPatqefFekFkdLstedelkksadvkkHgkkvldAlsdalakldekleaklkd 90 
+                          v+L+++ek++v+a+W+kv  +v+e+G+++L rl++++P+tq+fFe+F+dLst+d+++++++vk+Hgkkvl+A+sd+la+ld +l++++++
+  sp|P68871|HBB_HUMAN   2 VHLTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLD-NLKGTFAT 88 
+                          69****************..*************************************************************.******** PP
+
+    1872f030.globins4  91 LselHakklkvdpkyfkllsevlvdvlaarlpkeftadvqaaleKllalvakllaskYk 149
+                          LselH++kl+vdp++f+ll++vlv+vla++++keft++vqaa++K++a va++la+kY+
+  sp|P68871|HBB_HUMAN  89 LSELHCDKLHVDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH 147
+                          **********************************************************7 PP
+
+
+
+Internal pipeline statistics summary:
+-------------------------------------
+Query model(s):                              1  (149 nodes)
+Target sequences:                            1  (147 residues searched)
+Passed MSV filter:                         1  (1); expected 0.0 (0.02)
+Passed bias filter:                        1  (1); expected 0.0 (0.02)
+Passed Vit filter:                         1  (1); expected 0.0 (0.001)
+Passed Fwd filter:                         1  (1); expected 0.0 (1e-05)
+Initial search space (Z):                  1  [actual number of targets]
+Domain search space  (domZ):               1  [number of targets reported over threshold]
+# CPU time: 0.00u 0.00s 00:00:00.00 Elapsed: 00:00:00.00
+# Mc/sec: inf
+//
+[ok]
