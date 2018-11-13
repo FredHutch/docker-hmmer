@@ -22,7 +22,14 @@
   --query /usr/local/tests/HBB_HUMAN.fasta \
   --profile /usr/local/tests/globins4.hmm \
   --output /usr/local/tests/globins4.HBB_HUMAN.aln \
+  --output-tsv /usr/local/tests/globins4.HBB_HUMAN.tsv \
+  --output-fasta /usr/local/tests/globins4.HBB_HUMAN.fasta \
   --temp-folder /usr/local/tests/
+
+  [[ -s /usr/local/tests/globins4.HBB_HUMAN.aln ]]
+  [[ -s /usr/local/tests/globins4.HBB_HUMAN.tsv ]]
+  [[ -s /usr/local/tests/globins4.HBB_HUMAN.fasta ]]
+
 }
 
 @test "run hmmsearch.py on example file (GZIP)" {

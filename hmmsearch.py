@@ -28,7 +28,13 @@ if __name__ == "__main__":
                         help="Location for input HMM file.")
     parser.add_argument("--output",
                         type=str,
-                        help="Location for output HMM alignment.")
+                        help="Location for output HMM alignment (Text format).")
+    parser.add_argument("--output-tsv",
+                        type=str,
+                        help="Location for output HMM alignment (TSV format).")
+    parser.add_argument("--output-fasta",
+                        type=str,
+                        help="Location for output HMM alignment (Alignment).")
     parser.add_argument("--logfile",
                         type=str,
                         help="""(Optional) Write log to this file.""")
@@ -60,53 +66,60 @@ if __name__ == "__main__":
         exit_and_clean_up(temp_folder)
 
     # Run the alignment
-    output_aln = os.path.join(
-        temp_folder,
-        "{}.aln".format(str(uuid.uuid4())[:8])
-    )
+    output = {
+        suffix: os.path.join(
+            temp_folder,
+            "{}.{}".format(str(uuid.uuid4())[:8], suffix)
+        )
+        for suffix in ["aln", "tsv", "fasta"]
+    }
     try:
         run_cmds([
             "hmmsearch",
+            "-o", output["aln"],
+            "-A", output["fasta"],
+            "--tblout", output["tsv"],
             input_hmm,
             input_fasta
-        ], 
-            stdout=output_aln
-        )
+        ])
     except:
         exit_and_clean_up(temp_folder)
 
     # Make sure the output exists
-    assert os.path.exists(output_aln)
-
-    # Optionally compress the results
-    if args.output.endswith(".gz"):
-        logging.info('Compressing the output')
-        try:
-            run_cmds([
-                "gzip",
-                output_aln
-            ])
-        except:
-            exit_and_clean_up(temp_folder)
-
-        output_aln = output_aln + ".gz"
-
-    # Upload the results
-    try:
-        upload_file(output_aln, args.output)
-    except:
-        exit_and_clean_up(temp_folder)
-
-    # Upload the logs, if specified
-    if args.logfile is not None:
-        try:
-            upload_file(log_fp, args.logfile)
-        except:
-            exit_and_clean_up(temp_folder)
+    assert os.path.exists(output["aln"])
 
     logging.info("Time elapsed: {:,} seconds".format(
         round(time.time() - start_time, 2)
     ))
 
-    logging.info("Deleteing temporary files and shutting down")
+    # Iterate over each of the items to upload
+    for remote_path, local_path in [
+        (args.output, output["aln"]),
+        (args.output_tsv, output["tsv"]),
+        (args.output_fasta, output["fasta"]),
+        (args.logfile, log_fp),
+    ]:
+        # Skip items with no remote path specified
+        if remote_path is None:
+            continue
+
+        # Optionally compress the results
+        if remote_path.endswith(".gz"):
+            logging.info('Compressing ' + local_path)
+            try:
+                run_cmds([
+                    "gzip",
+                    local_path
+                ])
+            except:
+                exit_and_clean_up(temp_folder)
+            local_path = local_path + ".gz"
+            
+        # Upload the results
+        try:
+            upload_file(local_path, remote_path)
+        except:
+            exit_and_clean_up(temp_folder)
+
+    logging.info("Finished -- Deleteing temporary files and shutting down")
     shutil.rmtree(temp_folder)
