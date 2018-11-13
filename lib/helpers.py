@@ -137,7 +137,7 @@ def upload_file(local_fp, remote_fp):
     """Upload a file."""
     logging.info("Uploading {}".format(local_fp))
 
-    if local_fp.startswith("s3://"):
+    if remote_fp.startswith("s3://"):
         logging.info("Pushing to AWS S3")
         run_cmds(["aws", "s3", "cp", local_fp, remote_fp])
     else:
