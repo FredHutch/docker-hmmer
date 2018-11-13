@@ -1,6 +1,8 @@
 # docker-hmmer
 Docker image running HMMer
 
+[![Docker Repository on Quay](https://quay.io/repository/fhcrc-microbiome/hmmer/status "Docker Repository on Quay")](https://quay.io/repository/fhcrc-microbiome/hmmer)
+
 ### Wrapper scripts:
 
 The purpose of the wrapper scripts is to automatically handle the process
