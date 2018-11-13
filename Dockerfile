@@ -11,6 +11,9 @@ ADD . /usr/local/hmmer_scripts/
 RUN ln -s /usr/local/hmmer_scripts/hmmbuild.py /usr/local/bin/
 RUN ln -s /usr/local/hmmer_scripts/hmmsearch.py /usr/local/bin/
 
+# Add to the Python PATH
+ENV PYTHONPATH "${PYTONPATH}:/usr/local/hmmer_scripts"
+
 # Run tests
 ADD tests/ /usr/local/tests
 RUN bats /usr/local/tests && \
